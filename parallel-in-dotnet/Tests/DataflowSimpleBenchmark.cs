@@ -3,6 +3,8 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Bnaya.Samples;
 
+using static Helper;
+
 internal static class DataflowSimpleBenchmark
 {
     public static async Task<int> ComputeAsync(int jobCount, int iterations)
@@ -10,14 +12,7 @@ internal static class DataflowSimpleBenchmark
         var q = new ConcurrentQueue<int>();
         var block = new ActionBlock<int>(state =>
                         {
-                            int calc = 0;
-                            for (int i = state; i < iterations; i++)
-                            {
-                                if (i % 2 == 0)
-                                    calc += i;
-                                else
-                                    calc -= i;
-                            }
+                            int calc = Calc(state, iterations);
                             q.Enqueue(calc);
                         }, new ExecutionDataflowBlockOptions
                         {

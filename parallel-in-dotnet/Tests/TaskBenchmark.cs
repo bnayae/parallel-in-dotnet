@@ -1,5 +1,7 @@
 ﻿namespace Bnaya.Samples;
 
+using static Helper;
+
 internal static class TaskBenchmark
 {
     public static Task<int> ComputeAsync(int jobCount, int iterations)
@@ -9,14 +11,7 @@ internal static class TaskBenchmark
                         .Select(j =>
                                 Task.Factory.StartNew((state) =>
                                 {
-                                    int calc = 0;
-                                    for (int i = (int)state; i < iterations; i++)
-                                    {
-                                        if (i % 2 == 0)
-                                            calc += i;
-                                        else
-                                            calc -= i;
-                                    }
+                                    int calc = Calc((int)state, iterations);
                                     return calc;
                                 }, j)));
         return tasks.ContinueWith(t => t.Result.Sum());

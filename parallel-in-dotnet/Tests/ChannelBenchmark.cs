@@ -2,6 +2,8 @@
 
 namespace Bnaya.Samples;
 
+using static Helper;
+
 // https://learn.microsoft.com/en-us/dotnet/core/extensions/channels
 
 internal static class ChannelBenchmark
@@ -33,14 +35,7 @@ internal static class ChannelBenchmark
             int sum = 0;
             await foreach (int state in channel.Reader.ReadAllAsync())
             {
-                int calc = 0;
-                for (int i = state; i < iterations; i++)
-                {
-                    if (i % 2 == 0)
-                        calc += i;
-                    else
-                        calc -= i;
-                }
+                int calc = Calc(state, iterations);
                 sum += calc;
             }
             return sum;

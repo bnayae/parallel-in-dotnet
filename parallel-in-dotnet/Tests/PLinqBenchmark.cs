@@ -1,5 +1,7 @@
 ﻿namespace Bnaya.Samples;
 
+using static Helper;
+
 internal static class PLinqBenchmark
 {
     public static int Compute(int jobCount, int iterations)
@@ -9,14 +11,7 @@ internal static class PLinqBenchmark
                                 .WithExecutionMode(ParallelExecutionMode.ForceParallelism)
                             .Select(state =>
                                     {
-                                        int calc = 0;
-                                        for (int i = state; i < iterations; i++)
-                                        {
-                                            if (i % 2 == 0)
-                                                calc += i;
-                                            else
-                                                calc -= i;
-                                        }
+                                        int calc = Calc(state, iterations);
                                         return calc;
                                     })
                             .Sum();

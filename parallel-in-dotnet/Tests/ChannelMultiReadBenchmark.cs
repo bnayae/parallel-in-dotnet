@@ -2,6 +2,8 @@
 
 namespace Bnaya.Samples;
 
+using static Helper;
+
 // https://learn.microsoft.com/en-us/dotnet/core/extensions/channels
 
 internal static class ChannelMultiReadBenchmark

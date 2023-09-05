@@ -1,5 +1,7 @@
 ﻿namespace Bnaya.Samples;
 
+using static Helper;
+
 internal static class SynchronicBenchmark
 {
     public static int Compute(int jobCount, int iterations)
@@ -7,14 +9,7 @@ internal static class SynchronicBenchmark
         int sum = 0;
         for (int job = 0; job < jobCount; job++)
         {
-            int calc = 0;
-            for (int i = job; i < iterations; i++)
-            {
-                if (i % 2 == 0)
-                    calc += i;
-                else
-                    calc -= i;
-            }
+            int calc = Calc(job, iterations);
             sum += calc;
         }
         return sum;

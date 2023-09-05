@@ -2,20 +2,15 @@
 
 namespace Bnaya.Samples;
 
+using static Helper;
+
 internal static class DataflowBenchmark
 {
     public static async Task<int> ComputeAsync(int jobCount, int iterations)
     {
         var block = new TransformBlock<int, int>(state =>
                         {
-                            int calc = 0;
-                            for (int i = state; i < iterations; i++)
-                            {
-                                if (i % 2 == 0)
-                                    calc += i;
-                                else
-                                    calc -= i;
-                            }
+                            int calc = Calc(state, iterations);
                             return calc;
                         }, new ExecutionDataflowBlockOptions
                         {

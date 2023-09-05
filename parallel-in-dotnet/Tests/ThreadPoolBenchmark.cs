@@ -2,6 +2,8 @@
 
 namespace Bnaya.Samples;
 
+using static Helper;
+
 internal static class ThreadPoolBenchmark
 {
     public static int Compute(int jobCount, int iterations)
@@ -12,14 +14,7 @@ internal static class ThreadPoolBenchmark
         {
             ThreadPool.QueueUserWorkItem(state =>
             {
-                int calc = 0;
-                for (int i = (int)state; i < iterations; i++)
-                {
-                    if (i % 2 == 0)
-                        calc += i;
-                    else
-                        calc -= i;
-                }
+                int calc = Calc((int)state, iterations);
                 q.Enqueue(calc);
                 countdown.Signal();
             }, job);
