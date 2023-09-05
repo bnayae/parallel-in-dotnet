@@ -42,7 +42,7 @@ internal static class ChannelBenchmark
         }
     }
 
-    public static async Task Example()
+    public static async Task<int> Fork(int jobCount, int iterations)
     {
         var channel = Channel.CreateUnbounded<int>(new UnboundedChannelOptions
         {
@@ -52,27 +52,27 @@ internal static class ChannelBenchmark
 
         });
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < jobCount; i++)
         {
             await channel.Writer.WriteAsync(i);
         }
         channel.Writer.Complete();
 
-        await Task.WhenAll(
-                Reading("A"),
-                Reading("B"),
-                Reading("C")
-            );
 
-        async Task Reading(string tag)
+        int[] sums = await Task.WhenAll(Enumerable.Range(0, jobCount).Select(Reading));
+        return sums.Sum();
+
+        async Task<int> Reading(int job)
         {
+            int sum = 0;
             while (await channel.Reader.WaitToReadAsync())
             {
-                if (!channel.Reader.TryRead(out int v))
+                if (!channel.Reader.TryRead(out int state))
                     continue;
-                Console.WriteLine($"Channel [{tag}]: {v}");
-                await Task.Yield();
+                int calc = Calc(state, iterations);
+                sum += calc;
             }
+            return sum;
         }
     }
 }

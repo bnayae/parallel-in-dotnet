@@ -7,10 +7,7 @@ internal static class Helper
         int calc = 0;
         for (int i = start; i < iterations; i++)
         {
-            if (i % 2 == 0)
-                calc += i;
-            else
-                calc -= i;
+            calc += (i % 2 == 0) ? i : -i;
         }
         return calc;
     }
